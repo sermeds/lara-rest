@@ -28,7 +28,7 @@ class ReservationControllerTest extends TestCase
             'start_time' => now()->addHours(2)->format('H:i'),
             'end_time' => now()->addHours(4)->format('H:i'),
             'guests_count' => 4,
-            'status' => 'pending',
+            'status' => Reservation::STATUS_PENDING,
         ];
 
         // Создаем запрос на бронирование
@@ -41,7 +41,7 @@ class ReservationControllerTest extends TestCase
         $this->assertDatabaseHas('reservations', [
             'user_id' => $user->id,
             'table_id' => $table->id,
-            'status' => 'pending',
+            'status' => Reservation::STATUS_PENDING,
         ]);
 
         // Проверяем, что запись блокировки существует в Redis
@@ -63,7 +63,7 @@ class ReservationControllerTest extends TestCase
             'start_time' => now()->addHours(2)->format('H:i'),
             'end_time' => now()->addHours(4)->format('H:i'),
             'guests_count' => 20,
-            'status' => 'pending',
+            'status' => Reservation::STATUS_PENDING,
         ];
 
         // Создаем запрос на бронирование
@@ -76,7 +76,7 @@ class ReservationControllerTest extends TestCase
         $this->assertDatabaseHas('reservations', [
             'user_id' => $user->id,
             'hall_id' => $hall->id,
-            'status' => 'pending',
+            'status' => Reservation::STATUS_PENDING,
         ]);
 
         // Проверяем, что запись блокировки существует в Redis
@@ -96,7 +96,7 @@ class ReservationControllerTest extends TestCase
             'start_time' => now()->addHours(2)->format('H:i'),
             'end_time' => now()->addHours(4)->format('H:i'),
             'guests_count' => 20,
-            'status' => 'pending',
+            'status' => Reservation::STATUS_PENDING,
             'guest_name' => 'VladiSlave IRusskiy',
             'guest_phone' => '142342',
         ];
@@ -111,7 +111,7 @@ class ReservationControllerTest extends TestCase
         $this->assertDatabaseHas('reservations', [
             'user_id' => null,
             'hall_id' => $hall->id,
-            'status' => 'pending',
+            'status' => Reservation::STATUS_PENDING,
             'guest_name' => 'VladiSlave IRusskiy',
             'guest_phone' => '142342'
         ]);

@@ -55,6 +55,7 @@ Route::put('about-page', [AboutPageController::class, 'update']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/webhooks/payment', [PaymentWebhookController::class, 'handle']);
 
 //Route::middleware(['auth:sanctum', 'role:admin,user'])->group(function () {
 //    Route::apiResource('reservations', ReservationController::class);

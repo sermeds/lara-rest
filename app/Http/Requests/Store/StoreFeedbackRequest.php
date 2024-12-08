@@ -16,7 +16,6 @@ class StoreFeedbackRequest extends FormRequest
     {
         return [
             'user_id' => 'required|exists:users,id',
-            'cafe_id' => 'required|integer|min:1',
             'rating' => 'required|integer|min:1|max:5',
             'comment' => 'nullable|string',
         ];

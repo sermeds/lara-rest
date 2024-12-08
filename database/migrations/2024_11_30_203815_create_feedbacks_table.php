@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('feedbacks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->unsignedBigInteger('cafe_id'); // Если будет связь с отдельной таблицей кафе
             $table->tinyInteger('rating')->unsigned(); // Рейтинг от 1 до 5
             $table->text('comment')->nullable(); // Текст отзыва
             $table->timestamps();

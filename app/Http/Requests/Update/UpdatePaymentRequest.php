@@ -16,9 +16,8 @@ class UpdatePaymentRequest extends FormRequest
         return [
             'reservation_id' => 'sometimes|required|exists:reservations,id',
             'amount' => 'sometimes|required|numeric|min:0',
-            'payment_status' => 'sometimes|required|in:paid,pending,canceled',
+            'payment_status' => 'sometimes|required|in:successful,pending,cancelled',
             'payment_date' => 'sometimes|required|date',
-            'payment_method' => 'sometimes|required|in:card,cash',
         ];
     }
 }

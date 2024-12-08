@@ -19,7 +19,6 @@ class UpdateReceiptRequest extends FormRequest
             'amount' => 'sometimes|required|numeric|min:0',
             'issued_at' => 'sometimes|required|date',
             'tax_amount' => 'sometimes|nullable|numeric|min:0',
-            'payment_method' => 'sometimes|required|in:card,cash',
             'pdf_url' => 'sometimes|nullable|url',
             'status' => 'sometimes|required|in:issued,cancelled',
         ];

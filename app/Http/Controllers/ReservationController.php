@@ -20,7 +20,7 @@ class ReservationController extends Controller
 
     public function store(StoreReservationRequest $request)
     {
-
+        $request->merge(['user_id' => auth()->id()]);
         $validated = $request->validated();
         // Генерация ключа для Redis
         $key = $validated['table_id']
@@ -39,7 +39,14 @@ class ReservationController extends Controller
         $validated['status'] = Reservation::STATUS_PENDING;
         $reservation = Reservation::create($validated);
 
-        return response()->json($reservation, 201);
+        $paymentData  = [
+            'reservation_id' => $reservation->id,
+            'amount' => 500,
+        ];
+
+        $response = $this->postJson('/api/payments', $paymentData);
+
+        return response()->json($response, 201);
     }
 
     public function show(Reservation $request)
@@ -48,7 +55,6 @@ class ReservationController extends Controller
             // Для авторизованных пользователей показываем только их бронирования
             $reservation = Reservation::where('user_id', $request->user()->id)->get();
         } else {
-            // Для гостей показываем бронирования по телефону (если предусмотрен такой функционал)
             $reservation = Reservation::where('guest_phone', $request->input('guest_phone'))->get();
         }
         return $reservation;

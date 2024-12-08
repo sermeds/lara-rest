@@ -15,6 +15,7 @@ class BonusPointsController extends Controller
 
     public function store(StoreBonusPointsRequest $request)
     {
+        $request->merge(['user_id' => auth()->id()]);
         $validated = $request->validated();
         $bonusPoints = BonusPoints::create($validated);
         return response()->json($bonusPoints, 201);

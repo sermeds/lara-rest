@@ -20,7 +20,6 @@ class StoreReceiptRequest extends FormRequest
             'amount' => 'required|numeric|min:0',
             'issued_at' => 'required|date',
             'tax_amount' => 'nullable|numeric|min:0',
-            'payment_method' => 'required|in:card,cash',
             'pdf_url' => 'nullable|url',
             'status' => 'required|in:issued,cancelled',
         ];

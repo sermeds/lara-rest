@@ -28,7 +28,7 @@ class PaymentControllerTest extends TestCase
             'start_time' => now()->addHours(2)->format('H:i'),
             'end_time' => now()->addHours(4)->format('H:i'),
             'guests_count' => 4,
-            'status' => 'pending',
+            'status' => Payment::STATUS_PENDING,
         ];
 
         // Создаем запрос на бронирование
@@ -41,7 +41,6 @@ class PaymentControllerTest extends TestCase
         $paymentData  = [
             'reservation_id' => $reservation->id,
             'amount' => 100.50,
-            'payment_method' => 'card',
         ];
 
         $response = $this->postJson('/api/payments', $paymentData);

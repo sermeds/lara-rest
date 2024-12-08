@@ -18,7 +18,6 @@ return new class extends Migration
             $table->decimal('amount', 10, 2); // Сумма в чеке
             $table->timestamp('issued_at'); // Время выдачи чека
             $table->decimal('tax_amount', 10, 2)->nullable(); // Налог (опционально)
-            $table->string('payment_method'); // Способ оплаты (карта/наличные)
             $table->string('pdf_url')->nullable(); // Ссылка на PDF-чек
             $table->enum('status', ['issued', 'cancelled'])->default('issued'); // Статус чека
             $table->timestamps();

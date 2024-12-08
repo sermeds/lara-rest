@@ -15,6 +15,7 @@ class FeedbackController extends Controller
 
     public function store(StoreFeedbackRequest $request)
     {
+        $request->merge(['user_id' => auth()->id()]);
         $validated = $request->validated();
         $feedback = Feedback::create($validated);
         return response()->json($feedback, 201);

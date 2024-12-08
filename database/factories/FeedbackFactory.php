@@ -15,7 +15,6 @@ class FeedbackFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'cafe_id' => $this->faker->numberBetween(1, 5),
             'rating' => $this->faker->numberBetween(1, 5),
             'comment' => $this->faker->sentence(),
         ];

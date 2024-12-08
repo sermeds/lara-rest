@@ -18,7 +18,6 @@ class ReceiptFactory extends Factory
             'amount' => $this->faker->randomFloat(2, 10, 500),
             'issued_at' => $this->faker->dateTime(),
             'tax_amount' => $this->faker->randomFloat(2, 1, 50),
-            'payment_method' => $this->faker->randomElement(['card', 'cash']),
             'pdf_url' => $this->faker->url(),
             'status' => $this->faker->randomElement(['issued', 'cancelled']),
         ];

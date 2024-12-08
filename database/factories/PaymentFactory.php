@@ -15,9 +15,8 @@ class PaymentFactory extends Factory
         return [
             'reservation_id' => Reservation::factory(),
             'amount' => $this->faker->randomFloat(2, 20, 500),
-            'payment_status' => $this->faker->randomElement(['paid', 'pending', 'canceled']),
+            'payment_status' => $this->faker->randomElement(['successful', 'pending', 'cancelled']),
             'payment_date' => $this->faker->dateTime(),
-            'payment_method' => $this->faker->randomElement(['card', 'cash']),
         ];
     }
 }

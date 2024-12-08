@@ -10,12 +10,15 @@ class Payment extends Model
 {
     use HasFactory, SoftDeletes;
 
+    const STATUS_PENDING = 'pending'; // Ожидание оплаты
+    const STATUS_SUCCESSFUL = 'successful'; // Оплачено
+    const STATUS_CANCELLED = 'cancelled'; // Отменено
+
     protected $fillable = [
         'reservation_id',
         'amount',
         'payment_status',
         'payment_date',
-        'payment_method',
     ];
 
     protected $dates = ['deleted_at'];

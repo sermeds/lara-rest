@@ -17,9 +17,8 @@ class StorePaymentRequest extends FormRequest
         return [
             'reservation_id' => 'required|exists:reservations,id',
             'amount' => 'required|numeric|min:0',
-            'payment_status' => 'required|in:paid,pending,canceled',
+            'payment_status' => 'required|in:successful,pending,cancelled',
             'payment_date' => 'required|date',
-            'payment_method' => 'required|in:card,cash',
         ];
     }
 }

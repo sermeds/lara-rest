@@ -16,7 +16,6 @@ class Receipt extends Model
         'amount',
         'issued_at',
         'tax_amount',
-        'payment_method',
         'pdf_url',
         'status',
     ];

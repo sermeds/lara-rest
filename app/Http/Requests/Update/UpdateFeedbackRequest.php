@@ -15,7 +15,6 @@ class UpdateFeedbackRequest extends FormRequest
     {
         return [
             'user_id' => 'sometimes|required|exists:users,id',
-            'cafe_id' => 'sometimes|required|integer|min:1',
             'rating' => 'sometimes|required|integer|min:1|max:5',
             'comment' => 'sometimes|required|string',
         ];

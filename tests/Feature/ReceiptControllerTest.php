@@ -21,7 +21,6 @@ class ReceiptControllerTest extends TestCase
             'amount' => 100.50,
             'issued_at' => now()->toDateString(),
             'tax_amount' => 10.00,
-            'payment_method' => 'card',
             'pdf_url' => 'http://example.com/receipt.pdf',
             'status' => 'issued',
         ];
