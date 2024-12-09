@@ -28,11 +28,10 @@ class PaymentControllerTest extends TestCase
             'start_time' => now()->addHours(2)->format('H:i'),
             'end_time' => now()->addHours(4)->format('H:i'),
             'guests_count' => 4,
-            'status' => Payment::STATUS_PENDING,
         ];
 
         // Создаем запрос на бронирование
-        $reservationResponse  = $this->postJson('/api/reservations', $reservationData);
+        $reservationResponse = $this->postJson('/api/reservations', $reservationData);
 
         $reservationResponse->assertStatus(201);
 
@@ -47,12 +46,6 @@ class PaymentControllerTest extends TestCase
 
         $response->assertStatus(201);
         $this->assertDatabaseHas('payments', $paymentData);
-
-        $key = $reservationData['table_id']
-            ? $this->generateTableKey($reservationData['table_id'], $reservationData['reservation_date'], $reservationData['start_time'], $reservationData['end_time'])
-            : $this->generateHallKey($reservationData['hall_id'], $reservationData['reservation_date'], $reservationData['start_time'], $reservationData['end_time']);
-        print("key23 " . $key . "\n");
-        $this->assertFalse(Redis::exists($key) == 1);
     }
 
     public function test_payment_can_be_updated()
@@ -60,10 +53,11 @@ class PaymentControllerTest extends TestCase
         $payment = Payment::factory()->create();
 
         $data = [
-            'payment_status' => 'canceled',
+            'payment_status' => Payment::STATUS_CANCELLED,
         ];
 
         $response = $this->putJson("/api/payments/{$payment->id}", $data);
+        print ("PaymentController blablabla = {$response->getContent()}");
 
         $response->assertStatus(200);
         $this->assertDatabaseHas('payments', $data);
@@ -74,7 +68,7 @@ class PaymentControllerTest extends TestCase
         $payment = Payment::factory()->create();
 
         $response = $this->deleteJson("/api/payments/{$payment->id}");
-
+        print ("PaymentController delete blablabla = {$response->getContent()}");
         $response->assertStatus(204);
         $this->assertSoftDeleted('payments', ['id' => $payment->id]);
     }

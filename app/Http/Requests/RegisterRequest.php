@@ -16,7 +16,7 @@ class RegisterRequest extends FormRequest
         $rules = [
             'username' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $this->route('user'),
-            'password' => 'nullable|string|min:8',
+            'password' => 'required|string|min:8',
             'phone_number' => 'nullable|string|max:20',
         ];
 

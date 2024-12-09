@@ -5,38 +5,44 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Http\Requests\Store\StoreEventRequest;
 use App\Http\Requests\Update\UpdateEventRequest;
+use App\Services\EventService;
 
 class EventController extends Controller
 {
+    protected $eventService;
+
+    public function __construct(EventService $eventService)
+    {
+        $this->eventService = $eventService;
+    }
+
     public function index()
     {
-        return Event::all();
+        return$this->eventService->all();
     }
 
     public function store(StoreEventRequest $request)
     {
         $validated = $request->validated();
-        $event = Event::create($validated);
+        $event = $this->eventService->createEvent($validated);
         return response()->json($event, 201);
     }
 
-    public function show(Event $event)
+    public function show($id)
     {
-        return $event;
+        return $this->eventService->findOrFail($id);
     }
 
     public function update(UpdateEventRequest $request, $id)
     {
         $validated = $request->validated();
-        $event = Event::findOrFail($id);
-        $event->update($validated);
+        $event = $this->eventService->updateEvent($id, $validated);
         return response()->json($event, 200);
     }
 
     public function destroy($id)
     {
-        $event = Event::findOrFail($id);
-        $event->delete();
+        $this->eventService->deleteEvent($id);
 
         return response(null, 204);
     }

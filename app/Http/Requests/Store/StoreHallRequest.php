@@ -18,6 +18,7 @@ class StoreHallRequest extends FormRequest
             'name' => 'required|string|max:255',
             'capacity' => 'required|integer|min:1',
             'description' => 'nullable|string',
+            'img' => 'nullable|string',
             'schemeImg' => 'nullable|string',
         ];
     }

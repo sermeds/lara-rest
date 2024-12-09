@@ -17,6 +17,7 @@ class UpdateHallRequest extends FormRequest
             'name' => 'sometimes|required|string|max:255',
             'capacity' => 'sometimes|required|integer|min:1',
             'description' => 'sometimes|nullable|string',
+            'img' => 'sometimes|nullable|string',
             'schemeImg' => 'sometimes|nullable|string',
         ];
     }

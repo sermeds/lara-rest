@@ -21,7 +21,7 @@ class StoreReservationRequest extends FormRequest
             'reservation_date' => 'required|date',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',
-            'status' => 'nullable|required|string',
+            'status' => 'nullable|string',
             'guests_count' => 'required|integer|min:1',
             'special_requests' => 'nullable|string',
             'guest_name' => 'required_without:user_id|string|max:255',

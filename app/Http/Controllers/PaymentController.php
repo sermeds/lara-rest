@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Payment;
+use App\Services\PaymentService;
 use Illuminate\Http\Request;
 use App\Http\Requests\Update\UpdatePaymentRequest;
 use App\Models\Reservation;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use App\Traits\ReservationKeyGenerator;
 
@@ -13,9 +15,16 @@ class PaymentController extends Controller
 {
     use ReservationKeyGenerator;
 
+    protected $paymentService;
+
+    public function __construct(PaymentService $paymentService)
+    {
+        $this->paymentService = $paymentService;
+    }
+
     public function index()
     {
-        return Payment::all();
+        return $this->paymentService->all();
     }
 
     public function store(Request $request)
@@ -25,48 +34,26 @@ class PaymentController extends Controller
             'amount' => 'required|numeric|min:0.01',
         ]);
 
-        $reservation = Reservation::findOrFail($validated['reservation_id']);
+        $payment = $this->paymentService->createPayment($validated);
 
-        // Проверяем статус бронирования
-        if ($reservation->status !== Reservation::STATUS_PENDING) {
-            return response()->json(['message' => 'Оплата уже обработана или отменена.'], 400);
-        }
-
-        $payment = Payment::create([
-            'reservation_id' => $reservation->id,
-            'amount' => $validated['amount'],
-            'payment_status' => Payment::STATUS_PENDING,
-            'payment_date' => now(),
-        ]);
-
-        return response()->json(['message' => 'Платеж создан, ожидается подтверждение.', 'payment' => $payment], 201);
+        return response()->json($payment, 201);
     }
 
-    public function show(Payment $payment)
+    public function show($id)
     {
-        return $payment;
+        return $this->paymentService->findOrFail($id);
     }
 
     public function update(UpdatePaymentRequest $request, $id)
     {
         $validated = $request->validated();
-        $payment = Payment::findOrFail($id);
-        $payment->update($validated);
+        $payment = $this->paymentService->updatePayment($id, $validated);
         return response()->json($payment, 200);
     }
 
     public function destroy($id)
     {
-        $payment = Payment::findOrFail($id);
-        $payment->delete();
-
+        $this->paymentService->deletePayment($id);
         return response(null, 204);
     }
-
-    private function simulatePayment($amount): string
-    {
-        // Пример симуляции обработки платежа
-        return $amount > 0 ? 'success' : 'fail';
-    }
-
 }

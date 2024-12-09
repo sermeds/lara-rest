@@ -46,6 +46,39 @@ class ReservationControllerTest extends TestCase
 
         // Проверяем, что запись блокировки существует в Redis
         $key = $this->generateTableKey($table->id, $data['reservation_date'], $data['start_time'], $data['end_time']);
+        $this->assertTrue(Redis::exists($key) == 1);
+    }
+
+    public function test_test_2()
+    {
+        $hall = Hall::factory()->create();
+
+        $data = [
+            'user_id' => null,
+            'reservation_date' => now()->toDateString(),
+            'table_id' => null,
+            'hall_id' => $hall->id,
+            'start_time' => now()->addHours(2)->format('H:i'),
+            'end_time' => now()->addHours(4)->format('H:i'),
+            'guests_count' => 4,
+            'guest_name' => 'Vlad',
+            'guest_phone' => '1234521',
+        ];
+
+        // Создаем запрос на бронирование
+        $response = $this->postJson('/api/reservations', $data);
+
+        // Проверяем успешный статус ответа
+        $response->assertStatus(201);
+
+        // Проверяем наличие записи в базе данных
+        $this->assertDatabaseHas('reservations', [
+            'hall_id' => $hall->id,
+            'status' => Reservation::STATUS_PENDING,
+        ]);
+
+        // Проверяем, что запись блокировки существует в Redis
+        $key = $this->generateHallKey($hall->id, $data['reservation_date'], $data['start_time'], $data['end_time']);
         print("key2 " . $key . "\n");
         $this->assertTrue(Redis::exists($key) == 1);
     }
@@ -136,13 +169,13 @@ class ReservationControllerTest extends TestCase
         $reservation = Reservation::factory()->create();
 
         $data = [
-            'status' => 'completed',
+            'status' => Reservation::STATUS_SUCCESSFUL,
         ];
 
         $response = $this->putJson("/api/reservations/{$reservation->id}", $data);
 
         $response->assertStatus(200);
-        $this->assertDatabaseHas('reservations', ['status' => 'completed']);
+        $this->assertDatabaseHas('reservations', ['status' => Reservation::STATUS_SUCCESSFUL]);
     }
 
     public function test_reservation_can_be_deleted()

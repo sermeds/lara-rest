@@ -5,39 +5,45 @@ namespace App\Http\Controllers;
 use App\Models\Hall;
 use App\Http\Requests\Store\StoreHallRequest;
 use App\Http\Requests\Update\UpdateHallRequest;
+use App\Services\HallService;
+use Illuminate\Support\Facades\Log;
 
 class HallController extends Controller
 {
+    protected $hallService;
+
+    public function __construct(HallService $hallService)
+    {
+        $this->hallService = $hallService;
+    }
+
     public function index()
     {
-        return Hall::all();
+        return $this->hallService->all();
     }
 
     public function store(StoreHallRequest $request)
     {
         $validated = $request->validated();
-        $hall = Hall::create($validated);
+        $hall = $this->hallService->createHall($validated);
         return response()->json($hall, 201);
     }
 
-    public function show(Hall $hall)
+    public function show($id)
     {
-        return $hall;
+        return $this->hallService->findOrFail($id);
     }
 
     public function update(UpdateHallRequest $request, $id)
     {
         $validated = $request->validated();
-        $hall = Hall::findOrFail($id);
-        $hall->update($validated);
+        $hall = $this->hallService->updateHall($id, $validated);
         return response()->json($hall, 200);
     }
 
     public function destroy($id)
     {
-        $hall = Hall::findOrFail($id);
-        $hall->delete();
-
+        $this->hallService->deleteHall($id);
         return response(null, 204);
     }
 }

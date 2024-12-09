@@ -19,7 +19,6 @@ class FeedbackControllerTest extends TestCase
         // Данные для отзыва
         $data = [
             'user_id' => $user->id,
-            'cafe_id' => 1,
             'rating' => 4,
             'comment' => 'Amazing service!',
         ];
@@ -31,7 +30,6 @@ class FeedbackControllerTest extends TestCase
         $response->assertStatus(201);
         $this->assertDatabaseHas('feedbacks', [
             'user_id' => $user->id,
-            'cafe_id' => 1,
             'rating' => 4,
             'comment' => 'Amazing service!',
         ]);
@@ -55,7 +53,6 @@ class FeedbackControllerTest extends TestCase
         $response->assertStatus(200);
         $this->assertDatabaseHas('feedbacks', [
             'id' => $feedback->id,
-            'cafe_id' => $feedback->cafe_id,
             'rating' => 5,
             'comment' => 'Updated comment!',
         ]);

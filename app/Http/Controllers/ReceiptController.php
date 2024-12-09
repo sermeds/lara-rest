@@ -5,18 +5,26 @@ namespace App\Http\Controllers;
 use App\Models\Receipt;
 use App\Http\Requests\Store\StoreReceiptRequest;
 use App\Http\Requests\Update\UpdateReceiptRequest;
+use App\Services\ReceiptService;
 
 class ReceiptController extends Controller
 {
+    protected $receiptService;
+
+    public function __construct(ReceiptService $receiptService)
+    {
+        $this->receiptService = $receiptService;
+    }
+
     public function index()
     {
-        return Receipt::all();
+        return $this->receiptService->all();
     }
 
     public function store(StoreReceiptRequest $request)
     {
         $validated = $request->validated();
-        $receipt = Receipt::create($validated);
+        $receipt = $this->receiptService->createReceipt($validated);
         return response()->json($receipt, 201);
     }
 
@@ -28,16 +36,13 @@ class ReceiptController extends Controller
     public function update(UpdateReceiptRequest $request, $id)
     {
         $validated = $request->validated();
-        $receipt = Receipt::findOrFail($id);
-        $receipt->update($validated);
+        $receipt = $this->receiptService->updateReceipt($id, $validated);
         return response()->json($receipt, 200);
     }
 
     public function destroy($id)
     {
-        $receipt = Receipt::findOrFail($id);
-        $receipt->delete();
-
+        $this->receiptService->deleteReceipt($id);
         return response(null, 204);
     }
 }

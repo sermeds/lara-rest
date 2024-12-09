@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name'); // название зала
             $table->integer('capacity'); // вместимость
             $table->text('description')->nullable(); // описание
+            $table->string('img')->nullable(); // описание
             $table->string('schemeImg')->nullable(); // путь к схеме зала
             $table->timestamps();
             $table->softDeletes();

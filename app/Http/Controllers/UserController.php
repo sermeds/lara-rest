@@ -5,13 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Http\Requests\Store\StoreUserRequest;
 use App\Http\Requests\Update\UpdateUserRequest;
+use App\Services\UserService;
 use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function index()
     {
-        return User::all();
+        return $this->userService->all();
     }
 
     public function store(StoreUserRequest $request)
@@ -19,9 +27,7 @@ class UserController extends Controller
         // Валидация данных через Request
         $validated = $request->validated();
 
-        $validated['password'] = bcrypt($validated['password']);
-
-        $user = User::create($validated);
+        $user = $this->userService->createUser($validated);
 
         return response()->json($user, Response::HTTP_CREATED);
     }
@@ -42,8 +48,7 @@ class UserController extends Controller
         }
 
         // Найдем пользователя и обновим его
-        $user = User::findOrFail($id);
-        $user->update($validated);
+        $user = $this->userService->updateUser($id, $validated);
 
         // Возвращаем ответ с обновленными данными
         return response()->json($user, Response::HTTP_OK);
@@ -51,9 +56,7 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
-
+        $this->userService->deleteUser($id);
         return response(null, 204);
     }
 }

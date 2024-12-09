@@ -17,7 +17,6 @@ return new class extends Migration
             $table->decimal('amount', 10, 2); // сумма оплаты
             $table->string('payment_status'); // статус оплаты
             $table->timestamp('payment_date'); // дата оплаты
-            $table->string('payment_method'); // метод оплаты
             $table->timestamps();
             $table->softDeletes();
         });

@@ -15,6 +15,7 @@ class HallFactory extends Factory
             'name' => $this->faker->word(),
             'capacity' => $this->faker->numberBetween(10, 500),
             'description' => $this->faker->sentence(),
+            'img' => $this->faker->imageUrl(),
             'schemeImg' => $this->faker->imageUrl(),
         ];
     }

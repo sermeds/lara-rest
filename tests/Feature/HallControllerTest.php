@@ -16,7 +16,8 @@ class HallControllerTest extends TestCase
             'name' => 'Main Hall',
             'capacity' => 100,
             'description' => 'Spacious main hall',
-            'schemeImg' => '/data/img/fakeImg.png',
+            'img' => '/data/img/fakeImg.png',
+            'schemeImg' => '/data/img/fakeImg2.png',
         ];
 
         $response = $this->postJson('/api/halls', $data);

@@ -14,6 +14,7 @@ class Hall extends Model
         'name',
         'capacity',
         'description',
+        'img',
         'schemeImg',
     ];
 
