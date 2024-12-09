@@ -55,7 +55,7 @@ class ReservationService
                 'data' => $data,
             ]);
 
-            return response()->json(['message' => 'Ошибка создания бронирования.'], 500);
+            return response()->json(['message' => 'Ошибка создания бронирования.'], 500, options: JSON_UNESCAPED_UNICODE);
         }
     }
 

@@ -48,7 +48,7 @@ class ReservationController extends Controller
 
             $paymentLink = $this->paymentService->generatePaymentLink($payment->id);
 
-            return response()->json($paymentLink, 201);
+            return response()->json($paymentLink, 201, options:JSON_UNESCAPED_UNICODE);
 
         } catch (\Exception $e) {
             // Логируем ошибку
@@ -69,7 +69,7 @@ class ReservationController extends Controller
     {
         $validated = $request->validated();
         $reservation = $this->reservationService->updateReservation($id, $validated);
-        return response()->json($reservation, 200);
+        return response()->json($reservation, 200, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function destroy($id)

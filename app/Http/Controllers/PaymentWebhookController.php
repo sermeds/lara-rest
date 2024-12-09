@@ -16,7 +16,7 @@ class PaymentWebhookController extends Controller
 
         ProcessWebhook::dispatch($data);
 
-        return response()->json(['message' => 'Webhook accepted'], 202);
+        return response()->json(['message' => 'Webhook accepted'], 202, options:JSON_UNESCAPED_UNICODE);
     }
 
 }

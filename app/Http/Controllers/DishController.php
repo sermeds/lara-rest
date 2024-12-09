@@ -26,7 +26,7 @@ class DishController extends Controller
     {
         $validated = $request->validated();
         $dish = $this->dishService->createDish($validated);
-        return response()->json($dish, 201);
+        return response()->json($dish, 201, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function show($id)
@@ -38,7 +38,7 @@ class DishController extends Controller
     {
         $validated = $request->validated();
         $dish = $this->dishService->updateDish($id, $validated);
-        return response()->json($dish, 200);
+        return response()->json($dish, 200, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function destroy($id)

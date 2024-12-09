@@ -25,7 +25,7 @@ class ReceiptController extends Controller
     {
         $validated = $request->validated();
         $receipt = $this->receiptService->createReceipt($validated);
-        return response()->json($receipt, 201);
+        return response()->json($receipt, 201, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function show(Receipt $receipt)
@@ -37,7 +37,7 @@ class ReceiptController extends Controller
     {
         $validated = $request->validated();
         $receipt = $this->receiptService->updateReceipt($id, $validated);
-        return response()->json($receipt, 200);
+        return response()->json($receipt, 200, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function destroy($id)

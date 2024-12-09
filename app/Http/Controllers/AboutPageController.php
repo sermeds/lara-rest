@@ -17,6 +17,6 @@ class AboutPageController extends Controller
         $aboutPage = AboutPage::firstOrFail();
         $validated = $request->validated();
         $aboutPage->update($validated);
-        return response()->json($aboutPage, 200);
+        return response()->json($aboutPage, 200, options:JSON_UNESCAPED_UNICODE);
     }
 }

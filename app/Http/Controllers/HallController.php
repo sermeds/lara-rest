@@ -26,7 +26,7 @@ class HallController extends Controller
     {
         $validated = $request->validated();
         $hall = $this->hallService->createHall($validated);
-        return response()->json($hall, 201);
+        return response()->json($hall, 201, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function show($id)
@@ -38,7 +38,7 @@ class HallController extends Controller
     {
         $validated = $request->validated();
         $hall = $this->hallService->updateHall($id, $validated);
-        return response()->json($hall, 200);
+        return response()->json($hall, 200, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function destroy($id)

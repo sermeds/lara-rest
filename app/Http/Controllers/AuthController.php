@@ -28,7 +28,7 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Регистрация успешна.',
             'user' => $user,
-        ], 201);
+        ], 201, options:JSON_UNESCAPED_UNICODE);
     }
 
     // Вход в систему
@@ -37,7 +37,7 @@ class AuthController extends Controller
         $validated = $request->validated();
 
         if (!Auth::attempt(Arr::only($validated, ['email', 'password']))) {
-            return response()->json(['message' => 'Неверные учетные данные.'], 401);
+            return response()->json(['message' => 'Неверные учетные данные.'], 401, options:JSON_UNESCAPED_UNICODE);
         }
 
         $user = Auth::user();
@@ -46,7 +46,7 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Вход успешен.',
             'token' => $token,
-        ], 200);
+        ], 200, options:JSON_UNESCAPED_UNICODE);
     }
 
     // Выход из системы
@@ -54,7 +54,7 @@ class AuthController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json(['message' => 'Выход успешен.'], 200);
+        return response()->json(['message' => 'Выход успешен.'], 200, options:JSON_UNESCAPED_UNICODE);
     }
 }
 

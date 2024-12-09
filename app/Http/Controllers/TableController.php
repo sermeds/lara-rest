@@ -26,7 +26,7 @@ class TableController extends Controller
     {
         $validated = $request->validated();
         $table = $this->tableService->createTable($validated);
-        return response()->json($table, 201);
+        return response()->json($table, 201, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function show(Table $table)
@@ -38,7 +38,7 @@ class TableController extends Controller
     {
         $validated = $request->validated();
         $table = $this->tableService->updateTable($id, $validated);
-        return response()->json($table, 200);
+        return response()->json($table, 200, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function destroy($id)

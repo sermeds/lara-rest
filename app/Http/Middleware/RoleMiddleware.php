@@ -10,7 +10,7 @@ class RoleMiddleware
     public function handle(Request $request, Closure $next, ...$roles)
     {
         if (!$request->user() || !in_array($request->user()->role, $roles)) {
-            return response()->json(['message' => 'Доступ запрещен.'], 403);
+            return response()->json(['message' => 'Доступ запрещен.'], 403, options:JSON_UNESCAPED_UNICODE);
         }
 
         return $next($request);

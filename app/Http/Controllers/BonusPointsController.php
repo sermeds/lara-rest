@@ -26,7 +26,7 @@ class BonusPointsController extends Controller
         $request->merge(['user_id' => auth()->id()]);
         $validated = $request->validated();
         $bonusPoints = $this->bonusPointService->createBonusPoints($validated);
-        return response()->json($bonusPoints, 201);
+        return response()->json($bonusPoints, 201, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function show($id)
@@ -38,7 +38,7 @@ class BonusPointsController extends Controller
     {
         $validated = $request->validated();
         $bonusPoints = $this->bonusPointService->updateBonusPoints($id, $validated);
-        return response()->json($bonusPoints, 200);
+        return response()->json($bonusPoints, 200, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function destroy($id)

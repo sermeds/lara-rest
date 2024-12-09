@@ -25,7 +25,7 @@ class EventController extends Controller
     {
         $validated = $request->validated();
         $event = $this->eventService->createEvent($validated);
-        return response()->json($event, 201);
+        return response()->json($event, 201, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function show($id)
@@ -37,7 +37,7 @@ class EventController extends Controller
     {
         $validated = $request->validated();
         $event = $this->eventService->updateEvent($id, $validated);
-        return response()->json($event, 200);
+        return response()->json($event, 200, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function destroy($id)

@@ -25,7 +25,7 @@ class PromotionController extends Controller
     {
         $validated = $request->validated();
         $promotion = $this->promotionService->createPromotion($validated);
-        return response()->json($promotion, 201);
+        return response()->json($promotion, 201, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function show(Promotion $promotion)
@@ -37,7 +37,7 @@ class PromotionController extends Controller
     {
         $validated = $request->validated();
         $promotion = $this->promotionService->updatePromotion($id, $validated);
-        return response()->json($promotion, 200);
+        return response()->json($promotion, 200, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function destroy($id)

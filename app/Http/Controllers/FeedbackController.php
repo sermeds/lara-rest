@@ -26,7 +26,7 @@ class FeedbackController extends Controller
         $request->merge(['user_id' => auth()->id()]);
         $validated = $request->validated();
         $feedback = $this->feedbackService->createFeedback($validated);
-        return response()->json($feedback, 201);
+        return response()->json($feedback, 201, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function show($id)
@@ -38,7 +38,7 @@ class FeedbackController extends Controller
     {
         $validated = $request->validated();
         $feedback = $this->feedbackService->updateFeedback($id, $validated);
-        return response()->json($feedback, 200);
+        return response()->json($feedback, 200, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function destroy($id)

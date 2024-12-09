@@ -31,7 +31,7 @@ class PaymentService
 
         // Проверяем статус бронирования
         if ($reservation->status !== Reservation::STATUS_PENDING) {
-            return response()->json(['message' => 'Оплата уже обработана или отменена.'], 400);
+            return response()->json(['message' => 'Оплата уже обработана или отменена.'], 400, options:JSON_UNESCAPED_UNICODE);
         }
 
         return Payment::create([

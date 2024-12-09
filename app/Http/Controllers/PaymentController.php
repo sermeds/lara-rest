@@ -36,7 +36,7 @@ class PaymentController extends Controller
 
         $payment = $this->paymentService->createPayment($validated);
 
-        return response()->json($payment, 201);
+        return response()->json($payment, 201, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function show($id)
@@ -48,7 +48,7 @@ class PaymentController extends Controller
     {
         $validated = $request->validated();
         $payment = $this->paymentService->updatePayment($id, $validated);
-        return response()->json($payment, 200);
+        return response()->json($payment, 200, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function destroy($id)

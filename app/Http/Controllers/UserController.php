@@ -29,7 +29,7 @@ class UserController extends Controller
 
         $user = $this->userService->createUser($validated);
 
-        return response()->json($user, Response::HTTP_CREATED);
+        return response()->json($user, Response::HTTP_CREATED, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function show(User $user)
@@ -51,7 +51,7 @@ class UserController extends Controller
         $user = $this->userService->updateUser($id, $validated);
 
         // Возвращаем ответ с обновленными данными
-        return response()->json($user, Response::HTTP_OK);
+        return response()->json($user, Response::HTTP_OK, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function destroy($id)
