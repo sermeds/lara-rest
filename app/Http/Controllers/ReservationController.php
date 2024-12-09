@@ -34,20 +34,30 @@ class ReservationController extends Controller
         $request->merge(['user_id' => auth()->id()]);
         $validated = $request->validated();
 
-        $reservation = $this->reservationService->createReservation($validated);
+        try {
+            $reservation = $this->reservationService->createReservation($validated);
 
-        print("reservation blablbalblablalb" . $reservation . "\n");
+            print("reservation blablbalblablalb" . $reservation . "\n");
 
-        $paymentData  = [
-            'reservation_id' => $reservation->id,
-            'amount' => 500,
-        ];
+            $paymentData = [
+                'reservation_id' => $reservation->id,
+                'amount' => 500,
+            ];
 
-        $payment = $this->paymentService->createPayment($paymentData);
+            $payment = $this->paymentService->createPayment($paymentData);
 
-        $paymentLink = $this->paymentService->generatePaymentLink($payment->id);
+            $paymentLink = $this->paymentService->generatePaymentLink($payment->id);
 
-        return response()->json($paymentLink, 201);
+            return response()->json($paymentLink, 201);
+
+        } catch (\Exception $e) {
+            // Логируем ошибку
+            Log::error('Ошибка создания бронирования', [
+                'error' => $e->getMessage(),
+            ]);
+
+            return response()->json(['message' => 'Место или зал временно недоступны.'], 409, [], JSON_UNESCAPED_UNICODE);
+        }
     }
 
     public function show($id)

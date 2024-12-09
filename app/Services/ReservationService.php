@@ -34,7 +34,7 @@ class ReservationService
 
         // Проверяем наличие блокировки
         if (Redis::exists($key)) {
-            return response()->json(['message' => 'Место или зал временно недоступны.'], 409);
+            return response()->json(['message' => 'Место или зал временно недоступны.'], 409, [], JSON_UNESCAPED_UNICODE);
         }
 
         try {
