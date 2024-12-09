@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             PaymentSeeder::class,
             PromotionSeeder::class,
             ReceiptSeeder::class,
+            ReservationDishSeeder::class,
             ReservationSeeder::class,
             TableSeeder::class,
             UserSeeder::class,

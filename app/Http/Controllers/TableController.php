@@ -29,9 +29,9 @@ class TableController extends Controller
         return response()->json($table, 201, options:JSON_UNESCAPED_UNICODE);
     }
 
-    public function show(Table $table)
+    public function show($id)
     {
-        return $table;
+        return $this->tableService->findOrFail($id);
     }
 
     public function update(UpdateTableRequest $request, $id)

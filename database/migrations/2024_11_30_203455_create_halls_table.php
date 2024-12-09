@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('description')->nullable(); // описание
             $table->string('img')->nullable(); // описание
             $table->string('schemeImg')->nullable(); // путь к схеме зала
+            $table->integer('base_price'); // вместимость
             $table->timestamps();
             $table->softDeletes();
         });

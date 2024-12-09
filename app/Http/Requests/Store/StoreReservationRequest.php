@@ -26,6 +26,7 @@ class StoreReservationRequest extends FormRequest
             'special_requests' => 'nullable|string',
             'guest_name' => 'required_without:user_id|string|max:255',
             'guest_phone' => 'required_without:user_id|string|max:15',
+            'total_price' => 'nullable|integer|min:1',
         ];
     }
 }

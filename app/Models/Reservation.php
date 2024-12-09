@@ -26,6 +26,7 @@ class Reservation extends Model
         'special_requests',
         'guest_name',
         'guest_phone',
+        'total_price',
     ];
 
     protected $dates = ['deleted_at'];
@@ -47,4 +48,13 @@ class Reservation extends Model
     {
         return $this->belongsTo(Hall::class, 'hall_id');
     }
+
+    public function dishes()
+    {
+        return $this->belongsToMany(Dish::class, 'reservation_dishes')
+            ->withPivot('quantity', 'price')
+            ->withTimestamps();
+    }
+
+
 }

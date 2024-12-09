@@ -21,6 +21,7 @@ class TableControllerTest extends TestCase
             'is_available' => true,
             'x' => 5,
             'y' => 6,
+            'base_price' => 350,
         ];
 
         $response = $this->postJson('/api/tables', $data);

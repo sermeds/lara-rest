@@ -17,6 +17,7 @@ class HallFactory extends Factory
             'description' => $this->faker->sentence(),
             'img' => $this->faker->imageUrl(),
             'schemeImg' => $this->faker->imageUrl(),
+            'base_price' => $this->faker->numberBetween(500, 15000),
         ];
     }
 }

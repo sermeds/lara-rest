@@ -28,9 +28,9 @@ class ReceiptController extends Controller
         return response()->json($receipt, 201, options:JSON_UNESCAPED_UNICODE);
     }
 
-    public function show(Receipt $receipt)
+    public function show($id)
     {
-        return $receipt;
+        return $this->receiptService->findOrFail($id);
     }
 
     public function update(UpdateReceiptRequest $request, $id)

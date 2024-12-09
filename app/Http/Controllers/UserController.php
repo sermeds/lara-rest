@@ -32,9 +32,9 @@ class UserController extends Controller
         return response()->json($user, Response::HTTP_CREATED, options:JSON_UNESCAPED_UNICODE);
     }
 
-    public function show(User $user)
+    public function show($id)
     {
-        return $user;
+        return $this->userService->findOrFail($id);
     }
 
     public function update(UpdateUserRequest $request, $id)

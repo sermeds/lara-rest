@@ -28,9 +28,9 @@ class PromotionController extends Controller
         return response()->json($promotion, 201, options:JSON_UNESCAPED_UNICODE);
     }
 
-    public function show(Promotion $promotion)
+    public function show($id)
     {
-        return $promotion;
+        return $this->promotionService->findOrFail($id);
     }
 
     public function update(UpdatePromotionRequest $request, $id)

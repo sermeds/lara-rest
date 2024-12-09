@@ -20,6 +20,7 @@ class UpdateTableRequest extends FormRequest
             'is_available' => 'sometimes|required|boolean',
             'x' => 'sometimes|required|integer',
             'y' => 'sometimes|required|integer',
+            'base_price' => 'sometimes|required|integer|min:1',
         ];
     }
 }

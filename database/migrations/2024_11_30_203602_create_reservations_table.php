@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('special_requests')->nullable(); // особые запросы
             $table->string('guest_name')->nullable(); // имя гостя
             $table->string('guest_phone')->nullable(); // телефон гостя
+            $table->integer('total_price')->nullable(); // количество гостей
             $table->timestamps();
             $table->softDeletes();
         });

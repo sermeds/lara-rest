@@ -19,6 +19,7 @@ return new class extends Migration
             $table->boolean('is_available')->default(true); // доступность
             $table->integer('x'); // x координата
             $table->integer('y'); // y координата
+            $table->integer('base_price'); // y координата
             $table->timestamps();
             $table->softDeletes();
         });

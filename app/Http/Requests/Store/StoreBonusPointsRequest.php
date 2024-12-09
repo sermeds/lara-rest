@@ -20,4 +20,12 @@ class StoreBonusPointsRequest extends FormRequest
             'expiration_date' => 'nullable|date|after:today',
         ];
     }
+
+
+    public function messages(): array
+    {
+        return [
+            'user_id.required' => 'Необходим user_id'
+        ];
+    }
 }

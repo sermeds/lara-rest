@@ -16,6 +16,7 @@ class Hall extends Model
         'description',
         'img',
         'schemeImg',
+        'base_price',
     ];
 
     protected $dates = ['deleted_at'];

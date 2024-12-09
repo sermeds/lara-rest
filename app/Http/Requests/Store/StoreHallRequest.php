@@ -20,6 +20,7 @@ class StoreHallRequest extends FormRequest
             'description' => 'nullable|string',
             'img' => 'nullable|string',
             'schemeImg' => 'nullable|string',
+            'base_price' => 'required|integer|min:1',
         ];
     }
 }

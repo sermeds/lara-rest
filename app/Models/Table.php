@@ -17,6 +17,7 @@ class Table extends Model
         'is_available',
         'x',
         'y',
+        'base_price',
     ];
 
     protected $dates = ['deleted_at'];

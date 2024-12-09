@@ -41,7 +41,7 @@ class ReservationController extends Controller
 
             $paymentData = [
                 'reservation_id' => $reservation->id,
-                'amount' => 500,
+                'amount' => $reservation->total_price,
             ];
 
             $payment = $this->paymentService->createPayment($paymentData);
@@ -56,7 +56,7 @@ class ReservationController extends Controller
                 'error' => $e->getMessage(),
             ]);
 
-            return response()->json(['message' => 'Место или зал временно недоступны.'], 409, [], JSON_UNESCAPED_UNICODE);
+            return response()->json(['message' => $e->getMessage()], 409, [], JSON_UNESCAPED_UNICODE);
         }
     }
 

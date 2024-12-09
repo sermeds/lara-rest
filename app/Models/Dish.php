@@ -19,4 +19,12 @@ class Dish extends Model
     ];
 
     protected $dates = ['deleted_at'];
+
+    public function reservations()
+    {
+        return $this->belongsToMany(Reservation::class, 'reservation_dishes')
+            ->withPivot('quantity', 'price')
+            ->withTimestamps();
+    }
+
 }

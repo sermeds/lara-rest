@@ -23,6 +23,7 @@ class UpdateReservationRequest extends FormRequest
             'status' => 'sometimes|required|string',
             'guests_count' => 'sometimes|required|integer|min:1',
             'special_requests' => 'sometimes|nullable|string',
+            'total_price' => 'sometimes|nullable|integer|min:1',
         ];
     }
 }

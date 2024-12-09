@@ -19,6 +19,7 @@ class TableFactory extends Factory
             'is_available' => $this->faker->boolean(),
             'x' => $this->faker->numberBetween(0, 100),
             'y' => $this->faker->numberBetween(0, 100),
+            'base_price' => $this->faker->numberBetween(200, 1500),
         ];
     }
 }
