@@ -21,5 +21,28 @@ class UpdateDishRequest extends FormRequest
             'type' => 'sometimes|required|in:Salads,Snacks,Hot,Deserts,Drinks',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'Название блюда обязательно для обновления.',
+            'title.string' => 'Название блюда должно быть строкой.',
+            'title.max' => 'Название блюда не может превышать 255 символов.',
+
+            'weight.required' => 'Вес блюда обязателен для обновления.',
+            'weight.integer' => 'Вес блюда должен быть целым числом.',
+            'weight.min' => 'Вес блюда должен быть не менее 1.',
+
+            'cost.required' => 'Стоимость блюда обязательна для обновления.',
+            'cost.numeric' => 'Стоимость блюда должна быть числом.',
+            'cost.min' => 'Стоимость блюда должна быть не менее 0.',
+
+            'image.url' => 'URL изображения блюда должен быть валидным.',
+
+            'type.required' => 'Тип блюда обязателен для обновления.',
+            'type.in' => 'Тип блюда должен быть одним из: Salads, Snacks, Hot, Deserts, Drinks.',
+        ];
+    }
+
 }
 

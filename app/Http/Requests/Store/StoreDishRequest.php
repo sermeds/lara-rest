@@ -23,18 +23,27 @@ class StoreDishRequest extends FormRequest
         ];
     }
 
-    public function withValidator($validator)
+    public function messages(): array
     {
-        $validator->after(function ($validator) {
-            if (!$this->isJsonArrayValid()) {
-                $validator->errors()->add('data', 'The input must be a valid JSON array or a single object.');
-            }
-        });
+        return [
+            '*.title.required' => 'Название блюда обязательно.',
+            '*.title.string' => 'Название блюда должно быть строкой.',
+            '*.title.max' => 'Название блюда не может превышать 255 символов.',
+
+            '*.weight.required' => 'Вес блюда обязателен.',
+            '*.weight.integer' => 'Вес блюда должен быть целым числом.',
+            '*.weight.min' => 'Вес блюда должен быть не менее 1.',
+
+            '*.cost.required' => 'Стоимость блюда обязательна.',
+            '*.cost.numeric' => 'Стоимость блюда должна быть числом.',
+            '*.cost.min' => 'Стоимость блюда должна быть не менее 0.',
+
+            '*.image.url' => 'URL изображения блюда должен быть валидным.',
+
+            '*.type.required' => 'Тип блюда обязателен.',
+            '*.type.in' => 'Тип блюда должен быть одним из: Salads, Snacks, Hot, Deserts, Drinks.',
+        ];
     }
 
-    private function isJsonArrayValid(): bool
-    {
-        return $this->isArray() || $this->keys()->containsOnly(['title', 'weight', 'cost', 'image', 'type']);
-    }
 }
 

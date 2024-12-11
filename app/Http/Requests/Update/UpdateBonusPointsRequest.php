@@ -28,19 +28,5 @@ class UpdateBonusPointsRequest extends FormRequest
             '*.expired_at.date' => 'Дата истечения должна быть корректной датой.',
         ];
     }
-
-    public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-            if (!$this->isJsonArrayValid()) {
-                $validator->errors()->add('data', 'The input must be a valid JSON array or a single object.');
-            }
-        });
-    }
-
-    private function isJsonArrayValid(): bool
-    {
-        return $this->isArray() || $this->keys()->containsOnly(['user_id', 'points', 'expired_at']);
-    }
 }
 

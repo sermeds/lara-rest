@@ -31,19 +31,5 @@ class StoreBonusPointsRequest extends FormRequest
             '*.expiration_date.after' => 'Дата истечения должна быть в будущем.',
         ];
     }
-
-    public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-            if (!$this->isJsonArrayValid()) {
-                $validator->errors()->add('data', 'The input must be a valid JSON array or a single object.');
-            }
-        });
-    }
-
-    private function isJsonArrayValid(): bool
-    {
-        return $this->isArray() || $this->keys()->containsOnly(['user_id', 'points', 'expiration_date']);
-    }
 }
 

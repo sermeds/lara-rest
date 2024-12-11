@@ -12,7 +12,20 @@ use Illuminate\Support\Facades\Cache;
 
 class AboutPageService
 {
-    public function default(): void
+    public function show()
+    {
+        $this->default();
+        return AboutPage::first();
+    }
+
+    public function updateAboutPage(array $data)
+    {
+        $aboutPage = AboutPage::firstOrFail();
+        $aboutPage->update($data);
+        return $aboutPage;
+    }
+
+    private function default(): void
     {
         if (AboutPage::count() === 0) {
             AboutPage::create([

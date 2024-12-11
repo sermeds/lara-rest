@@ -12,20 +12,11 @@ use Illuminate\Support\Facades\Cache;
 
 class AdminService
 {
-    protected $aboutPageService;
-
-    public function __construct(AboutPageService $aboutPageService)
-    {
-        $this->aboutPageService = $aboutPageService;
-    }
 
     public function getAdminData(): array
     {
-        $this->aboutPageService->default();
-
         return Cache::remember('admin_data', 600, function () {
             return [
-                'AboutPage' => AboutPage::all(),
                 'BonusPoints' => BonusPoints::all(),
                 'Dish' => Dish::all(),
                 'Hall' => Hall::all(),

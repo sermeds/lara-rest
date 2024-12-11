@@ -20,7 +20,7 @@ class StoreTableRequest extends FormRequest
             '*.is_available' => 'required|boolean',
             '*.x' => 'required|integer',
             '*.y' => 'required|integer',
-            '*.*base_price' => 'required|integer|min:1',
+            '*.base_price' => 'required|integer|min:1',
         ];
     }
 
