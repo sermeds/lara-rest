@@ -36,9 +36,11 @@ class ReservationService
 
     public function createReservation(array $data)
     {
+        $key = null; // Инициализация переменной
+
         try {
             // Генерация ключа для Redis
-            $key = $data['table_id']
+            $key = $data['table_id'] ?? null
                 ? $this->generateTableKey($data['table_id'], $data['reservation_date'], $data['start_time'], $data['end_time'])
                 : $this->generateHallKey($data['hall_id'], $data['reservation_date'], $data['start_time'], $data['end_time']);
 
@@ -47,7 +49,7 @@ class ReservationService
                 return response()->json(['message' => 'Место или зал временно недоступны.'], 409, [], JSON_UNESCAPED_UNICODE);
             }
             // Устанавливаем блокировку
-            $this->blockPlace($key, $data['user_id'], $data['start_time'], $data['end_time']);
+            $this->blockPlace($key, $data['user_id'] ?? $data['guest_name'], $data['start_time'], $data['end_time']);
 
             // Создаем бронирование со статусом `pending`
             $data['status'] = Reservation::STATUS_PENDING;

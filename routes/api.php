@@ -44,8 +44,6 @@ Route::apiResource('feedbacks', FeedbackController::class);
 // Роуты для чеков
 Route::apiResource('receipts', ReceiptController::class);
 
-// Роуты для бонусных баллов
-Route::apiResource('bonus-points', BonusPointsController::class);
 
 // Роуты для блюд
 Route::apiResource('dishes', DishController::class);
@@ -63,7 +61,8 @@ Route::get('/admin/data', [AdminController::class, 'index']);
 Route::post('/admin/clear-cache', [AdminController::class, 'clearCache']);
 
 
-//Route::middleware(['auth:sanctum', 'role:admin,user'])->group(function () {
-//    Route::apiResource('reservations', ReservationController::class);
-//});
+Route::middleware(['auth:sanctum', 'role:admin,user'])->group(function () {
+    // Роуты для бонусных баллов
+    Route::apiResource('bonus-points', BonusPointsController::class);
+});
 
