@@ -7,6 +7,8 @@ use App\Http\Requests\Store\StoreUserRequest;
 use App\Http\Requests\Update\UpdateUserRequest;
 use App\Services\UserService;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Request;
 
 class UserController extends Controller
 {
@@ -22,41 +24,68 @@ class UserController extends Controller
         return $this->userService->all();
     }
 
-    public function store(StoreUserRequest $request)
-    {
-        // Валидация данных через Request
-        $validated = $request->validated();
-
-        $user = $this->userService->createUser($validated);
-
-        return response()->json($user, Response::HTTP_CREATED, options:JSON_UNESCAPED_UNICODE);
-    }
-
     public function show($id)
     {
         return $this->userService->findOrFail($id);
     }
 
-    public function update(UpdateUserRequest $request, $id)
+    public function store(StoreUserRequest $request)
     {
-        // Валидация данных из запроса
+        Log::debug("blabla");
         $validated = $request->validated();
 
-        // Проверяем, если в запросе есть новый пароль, то хешируем его
-        if ($request->has('password')) {
-            $validated['password'] = bcrypt($request->password);
+        // Проверяем, является ли запрос массивом
+        $users = is_array($validated[0] ?? null) ? $validated : [$validated];
+
+        $createdUsers= [];
+        foreach ($users as $user) {
+            $createdUsers[] = $this->userService->createUser($user);
         }
 
-        // Найдем пользователя и обновим его
-        $user = $this->userService->updateUser($id, $validated);
-
-        // Возвращаем ответ с обновленными данными
-        return response()->json($user, Response::HTTP_OK, options:JSON_UNESCAPED_UNICODE);
+        return response()->json($createdUsers, 201, options: JSON_UNESCAPED_UNICODE);
     }
 
-    public function destroy($id)
+    public function update(UpdateUserRequest $request, $id = null)
     {
-        $this->userService->deleteUser($id);
+        $validated = $request->validated();
+
+        // Если передан массив данных
+        if (is_array($validated[0] ?? null)) {
+            $updatedUsers = [];
+            foreach ($validated as $user) {
+                if (!isset($user['id'])) {
+                    return response()->json(['error' => 'ID is required for update.'], 400);
+                }
+                // Проверяем, если в запросе есть новый пароль, то хешируем его
+                if (isset($user['password'])) {
+                    $user['password'] = bcrypt($user['password']);
+                }
+                $updatedUsers[] = $this->userService->updateUser($user['id'], $user);
+            }
+            return response()->json($updatedUsers, 200, options: JSON_UNESCAPED_UNICODE);
+        }
+
+        // Если данные для одного элемента
+        $user = $this->userService->updateUser($id, $validated);
+        return response()->json($user, 200, options: JSON_UNESCAPED_UNICODE);
+    }
+
+    public function destroy(Request $request, $id = null)
+    {
+        if ($id !== null) {
+            $this->userService->deleteUser($id);
+            return response(null, 204);
+        }
+
+        $ids = $request->input('ids');
+        if (!is_array($ids)) {
+            return response()->json(['error' => 'IDs must be an array.'], 400);
+        }
+
+        foreach ($ids as $id) {
+            $this->userService->deleteUser($id);
+        }
+
         return response(null, 204);
     }
 }

@@ -15,6 +15,7 @@ use App\Http\Controllers\BonusPointsController;
 use App\Http\Controllers\DishController;
 use App\Http\Controllers\AboutPageController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
 
 // Роуты для пользователей
 Route::apiResource('users', UserController::class);
@@ -57,6 +58,10 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/webhooks/payment', [PaymentWebhookController::class, 'handle']);
+
+Route::get('/admin/data', [AdminController::class, 'index']);
+Route::post('/admin/clear-cache', [AdminController::class, 'clearCache']);
+
 
 //Route::middleware(['auth:sanctum', 'role:admin,user'])->group(function () {
 //    Route::apiResource('reservations', ReservationController::class);

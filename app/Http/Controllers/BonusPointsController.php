@@ -6,6 +6,7 @@ use App\Models\BonusPoints;
 use App\Http\Requests\Store\StoreBonusPointsRequest;
 use App\Http\Requests\Update\UpdateBonusPointsRequest;
 use App\Services\BonusPointsService;
+use Illuminate\Support\Facades\Request;
 
 class BonusPointsController extends Controller
 {
@@ -21,29 +22,63 @@ class BonusPointsController extends Controller
         return $this->bonusPointService->all();
     }
 
-    public function store(StoreBonusPointsRequest $request)
-    {
-        $request->merge(['user_id' => auth()->id()]);
-        $validated = $request->validated();
-        $bonusPoints = $this->bonusPointService->createBonusPoints($validated);
-        return response()->json($bonusPoints, 201, options:JSON_UNESCAPED_UNICODE);
-    }
-
     public function show($id)
     {
         return $this->bonusPointService->findOrFail($id);
     }
 
-    public function update(UpdateBonusPointsRequest $request, $id)
+    public function store(StoreBonusPointsRequest $request)
     {
         $validated = $request->validated();
-        $bonusPoints = $this->bonusPointService->updateBonusPoints($id, $validated);
-        return response()->json($bonusPoints, 200, options:JSON_UNESCAPED_UNICODE);
+
+        // Проверяем, является ли запрос массивом
+        $bonusPoints = is_array($validated[0] ?? null) ? $validated : [$validated];
+
+        $createdBonusPoints = [];
+        foreach ($bonusPoints as $bonusPoint) {
+            $createdBonusPoints[] = $this->bonusPointService->createBonusPoints($bonusPoint);
+        }
+
+        return response()->json($createdBonusPoints, 201, options: JSON_UNESCAPED_UNICODE);
     }
 
-    public function destroy($id)
+    public function update(UpdateBonusPointsRequest $request, $id = null)
     {
-        $this->bonusPointService->deleteBonusPoints($id);
+        $validated = $request->validated();
+
+        // Если передан массив данных
+        if (is_array($validated[0] ?? null)) {
+            $updatedBonusPoints = [];
+            foreach ($validated as $bonusPoint) {
+                if (!isset($bonusPoint['id'])) {
+                    return response()->json(['error' => 'ID is required for update.'], 400);
+                }
+                $updatedBonusPoints[] = $this->bonusPointService->updateBonusPoints($bonusPoint['id'], $bonusPoint);
+            }
+            return response()->json($updatedBonusPoints, 200, options: JSON_UNESCAPED_UNICODE);
+        }
+
+        // Если данные для одного элемента
+        $bonusPoint = $this->bonusPointService->updateBonusPoints($id, $validated);
+        return response()->json($bonusPoint, 200, options: JSON_UNESCAPED_UNICODE);
+    }
+
+    public function destroy(Request $request, $id = null)
+    {
+        if ($id !== null) {
+            $this->bonusPointService->deleteBonusPoints($id);
+            return response(null, 204);
+        }
+
+        $ids = $request->input('ids');
+        if (!is_array($ids)) {
+            return response()->json(['error' => 'IDs must be an array.'], 400);
+        }
+
+        foreach ($ids as $id) {
+            $this->bonusPointService->deleteBonusPoints($id);
+        }
+
         return response(null, 204);
     }
 }
