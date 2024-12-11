@@ -29,5 +29,44 @@ class StoreReservationRequest extends FormRequest
             'total_price' => 'nullable|integer|min:1',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'user_id.exists' => 'Указанный пользователь не существует.',
+            'table_id.exists' => 'Указанный стол не существует.',
+            'hall_id.exists' => 'Указанный зал не существует.',
+
+            'reservation_date.required' => 'Дата бронирования обязательна.',
+            'reservation_date.date' => 'Дата бронирования должна быть корректной датой.',
+
+            'start_time.required' => 'Время начала бронирования обязательно.',
+            'start_time.date_format' => 'Время начала должно быть в формате ЧЧ:ММ.',
+
+            'end_time.required' => 'Время окончания бронирования обязательно.',
+            'end_time.date_format' => 'Время окончания должно быть в формате ЧЧ:ММ.',
+            'end_time.after' => 'Время окончания должно быть позже времени начала.',
+
+            'status.string' => 'Статус бронирования должен быть строкой.',
+
+            'guests_count.required' => 'Количество гостей обязательно.',
+            'guests_count.integer' => 'Количество гостей должно быть числом.',
+            'guests_count.min' => 'Количество гостей должно быть не менее 1.',
+
+            'special_requests.string' => 'Особые пожелания должны быть строкой.',
+
+            'guest_name.required_without' => 'Имя гостя обязательно, если не указан пользователь.',
+            'guest_name.string' => 'Имя гостя должно быть строкой.',
+            'guest_name.max' => 'Имя гостя не должно превышать 255 символов.',
+
+            'guest_phone.required_without' => 'Телефон гостя обязателен, если не указан пользователь.',
+            'guest_phone.string' => 'Телефон гостя должен быть строкой.',
+            'guest_phone.max' => 'Телефон гостя не должен превышать 15 символов.',
+
+            'total_price.integer' => 'Итоговая цена должна быть целым числом.',
+            'total_price.min' => 'Итоговая цена должна быть больше 0.',
+        ];
+    }
+
 }
 
