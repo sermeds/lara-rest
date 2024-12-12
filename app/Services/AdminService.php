@@ -12,18 +12,34 @@ use Illuminate\Support\Facades\Cache;
 
 class AdminService
 {
+    protected $bonusPointsService;
+    protected $dishService;
+    protected $hallService;
+    protected $tableService;
+    protected $userService;
+
+    public function __construct(BonusPointsService $bonusPointsService,
+                                DishService        $dishService,
+                                HallService        $hallService,
+                                TableService       $tableService,
+                                UserService        $userService)
+    {
+        $this->bonusPointsService = $bonusPointsService;
+        $this->dishService = $dishService;
+        $this->hallService = $hallService;
+        $this->tableService = $tableService;
+        $this->userService = $userService;
+    }
 
     public function getAdminData(): array
     {
-        return Cache::remember('admin_data', 600, function () {
-            return [
-                'BonusPoints' => BonusPoints::all(),
-                'Dish' => Dish::all(),
-                'Hall' => Hall::all(),
-                'Table' => Table::all(),
-                'User' => User::all(),
-            ];
-        });
+        return [
+            'BonusPoints' => $this->bonusPointsService->all(),
+            'Dish' => $this->dishService->all(),
+            'Hall' => $this->hallService->all(),
+            'Table' => $this->tableService->all(),
+            'User' => $this->userService->all(),
+        ];
     }
 
     public function clearCache(): void
