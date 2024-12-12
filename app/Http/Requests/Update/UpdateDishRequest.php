@@ -18,7 +18,7 @@ class UpdateDishRequest extends FormRequest
             'weight' => 'sometimes|required|integer|min:1',
             'cost' => 'sometimes|required|numeric|min:0',
             'image' => 'sometimes|nullable|url',
-            'type' => 'sometimes|required|in:Salads,Snacks,Hot,Deserts,Drinks',
+            'type' => 'sometimes|required|in:Salads,Snacks,Hot,Desserts,Drinks',
         ];
     }
 
@@ -40,7 +40,7 @@ class UpdateDishRequest extends FormRequest
             'image.url' => 'URL изображения блюда должен быть валидным.',
 
             'type.required' => 'Тип блюда обязателен для обновления.',
-            'type.in' => 'Тип блюда должен быть одним из: Salads, Snacks, Hot, Deserts, Drinks.',
+            'type.in' => 'Тип блюда должен быть одним из: Salads, Snacks, Hot, Desserts, Drinks.',
         ];
     }
 

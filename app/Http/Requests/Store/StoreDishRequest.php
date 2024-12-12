@@ -19,7 +19,7 @@ class StoreDishRequest extends FormRequest
             '*.weight' => 'required|integer|min:1',
             '*.cost' => 'required|numeric|min:0',
             '*.image' => 'nullable|url',
-            '*.type' => 'required|in:Salads,Snacks,Hot,Deserts,Drinks',
+            '*.type' => 'required|in:Salads,Snacks,Hot,Desserts,Drinks',
         ];
     }
 
@@ -41,7 +41,7 @@ class StoreDishRequest extends FormRequest
             '*.image.url' => 'URL изображения блюда должен быть валидным.',
 
             '*.type.required' => 'Тип блюда обязателен.',
-            '*.type.in' => 'Тип блюда должен быть одним из: Salads, Snacks, Hot, Deserts, Drinks.',
+            '*.type.in' => 'Тип блюда должен быть одним из: Salads, Snacks, Hot, Desserts, Drinks.',
         ];
     }
 
