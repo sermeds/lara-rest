@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ReservationConflictException;
 use App\Models\Reservation;
 use App\Http\Requests\Store\StoreReservationRequest;
 use App\Http\Requests\Update\UpdateReservationRequest;
@@ -47,6 +48,12 @@ class ReservationController extends Controller
             $paymentLink = $this->paymentService->generatePaymentLink($payment->id);
 
             return response()->json($paymentLink, 201, options:JSON_UNESCAPED_UNICODE);
+
+        } catch (ReservationConflictException $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'suggested_time' => $e->getData()['suggested_time'] ?? null,
+            ], 409, [], JSON_UNESCAPED_UNICODE);
 
         } catch (\Exception $e) {
             // Логируем ошибку
