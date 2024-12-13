@@ -37,8 +37,6 @@ class ReservationController extends Controller
         try {
             $reservation = $this->reservationService->createReservation($validated);
 
-            print("reservation blablbalblablalb" . $reservation . "\n");
-
             $paymentData = [
                 'reservation_id' => $reservation->id,
                 'amount' => $reservation->total_price,

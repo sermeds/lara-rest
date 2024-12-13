@@ -56,6 +56,6 @@ class PaymentService
 
     public function generatePaymentLink($id)
     {
-        return "localhost:8081/checkId={$id}";
+        return "http://localhost:8081/checkId={$id}";
     }
 }

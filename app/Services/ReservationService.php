@@ -98,8 +98,6 @@ class ReservationService
         ];
 
         Redis::set($key, json_encode($data), 'EX', 1200); // Блокировка на 20 минут
-        print(Redis::get($key) . "\n");
-        print(Redis::exists($key) . "\n");
     }
 
     public function calculateTotalPrice($reservation)
