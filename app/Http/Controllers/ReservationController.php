@@ -54,7 +54,7 @@ class ReservationController extends Controller
                 'error' => $e->getMessage(),
             ]);
 
-            return response()->json(['message' => $e->getMessage()], 409, [], JSON_UNESCAPED_UNICODE);
+            return response()->json(['message' => "Ошибка создания бронирования."], 409, [], JSON_UNESCAPED_UNICODE);
         }
     }
 
