@@ -33,13 +33,15 @@ class AdminService
 
     public function getAdminData(): array
     {
-        return [
-            'BonusPoints' => $this->bonusPointsService->all(),
-            'Dish' => $this->dishService->all(),
-            'Hall' => $this->hallService->all(),
-            'Table' => $this->tableService->all(),
-            'User' => $this->userService->all(),
-        ];
+        return Cache::remember('admin_data', 600, function () {
+            return [
+                'BonusPoints' => $this->bonusPointsService->all(),
+                'Dish' => $this->dishService->all(),
+                'Hall' => $this->hallService->all(),
+                'Table' => $this->tableService->all(),
+                'User' => $this->userService->all(),
+            ];
+        });
     }
 
     public function clearCache(): void
