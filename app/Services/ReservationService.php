@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\ReservationConflictException;
 use App\Models\Dish;
 use App\Models\Reservation;
 use App\Models\Payment;
@@ -38,40 +39,71 @@ class ReservationService
     {
         $key = null; // Инициализация переменной
 
-        try {
-            // Генерация ключа для Redis
-            $key = $data['table_id'] ?? null
+//        try {
+        // Генерация ключа для Redis
+        $key = $data['table_id'] ?? null
                 ? $this->generateTableKey($data['table_id'], $data['reservation_date'], $data['start_time'], $data['end_time'])
                 : $this->generateHallKey($data['hall_id'], $data['reservation_date'], $data['start_time'], $data['end_time']);
 
-            // Проверяем наличие блокировки
-            if (Redis::exists($key)) {
-                return response()->json(['message' => 'Место или зал временно недоступны.'], 409, [], JSON_UNESCAPED_UNICODE);
-            }
-            // Устанавливаем блокировку
-            $this->blockPlace($key, $data['user_id'] ?? $data['guest_name'], $data['start_time'], $data['end_time']);
-
-            // Создаем бронирование со статусом `pending`
-            $data['status'] = Reservation::STATUS_PENDING;
-
-            $reservation = Reservation::create($data);
-
-            // Считаем общую стоимость
-            $reservation->total_price = $this->calculateTotalPrice($reservation);
-
-            return $reservation;
-        } catch (\Exception $e) {
-            // Удаляем блокировку в случае ошибки
-            Redis::del($key);
-
-            // Логируем ошибку
-            Log::error('Ошибка создания бронирования', [
-                'error' => $e->getMessage(),
-                'data' => $data,
-            ]);
-
-            return response()->json(['message' => 'Ошибка создания бронирования.'], 500, options: JSON_UNESCAPED_UNICODE);
+        // Проверяем наличие блокировки
+        if (Redis::exists($key)) {
+            return response()->json(['message' => 'Место или зал временно недоступны.'], 409, [], JSON_UNESCAPED_UNICODE);
         }
+
+        $conflictingReservations = $this->getConflictingReservations(
+            $data['table_id'] ?? null,
+            $data['hall_id'] ?? null,
+            $data['reservation_date'],
+            $data['start_time'],
+            $data['end_time']
+        );
+
+        if ($conflictingReservations) {
+            $suggestedTime = $this->findNextAvailableTime(
+                $data['table_id'] ?? null,
+                $data['hall_id'] ?? null,
+                $data['reservation_date'],
+                $data['end_time']
+            );
+
+            throw new ReservationConflictException(
+                'Место или зал уже забронированы. Попробуйте изменить время бронирования или выбрать другой столик.',
+                ['suggested_time' => $suggestedTime]
+            );
+        }
+
+        // Устанавливаем блокировку
+        $this->blockPlace($key, $data['user_id'] ?? $data['guest_name'], $data['start_time'], $data['end_time']);
+
+        // Создаем бронирование со статусом `pending`
+        $data['status'] = Reservation::STATUS_PENDING;
+
+        $reservation = Reservation::create($data);
+
+        // Считаем общую стоимость
+        $reservation->total_price = $this->calculateTotalPrice($reservation);
+
+        return $reservation;
+//        }
+//        catch (ReservationConflictException $e) {
+//            return response()->json([
+//                'message' => $e->getMessage(),
+//                'suggested_time' => $e->getData()['suggested_time'] ?? null,
+//            ], 409, [], JSON_UNESCAPED_UNICODE);
+//
+//        }
+//        catch (\Exception $e) {
+//            // Удаляем блокировку в случае ошибки
+//            Redis::del($key);
+//
+//            // Логируем ошибку
+//            Log::error('Ошибка создания бронирования', [
+//                'error' => $e->getMessage(),
+//                'data' => $data,
+//            ]);
+//
+//            return response()->json(['message' => 'Ошибка создания бронирования.'], 500, options: JSON_UNESCAPED_UNICODE);
+//        }
     }
 
     public function updateReservation($id, array $data)
@@ -154,6 +186,42 @@ class ReservationService
         });
 
         return $menuCostPerGuest * $reservation->guests_count;
+    }
+
+    /**
+     * Получить пересекающиеся бронирования.
+     */
+    private function getConflictingReservations($tableId, $hallId, $reservationDate, $startTime, $endTime)
+    {
+        return Reservation::query()
+            ->when($tableId, fn($query) => $query->where('table_id', $tableId))
+            ->when($hallId, fn($query) => $query->where('hall_id', $hallId))
+            ->where('reservation_date', $reservationDate)
+            ->where(function ($query) use ($startTime, $endTime) {
+                $query->whereBetween('start_time', [$startTime, $endTime])
+                    ->orWhereBetween('end_time', [$startTime, $endTime])
+                    ->orWhereRaw('? BETWEEN start_time AND end_time', [$startTime])
+                    ->orWhereRaw('? BETWEEN start_time AND end_time', [$endTime]);
+            })
+            ->get()->isNotEmpty();
+    }
+
+    /**
+     * Найти ближайшее доступное время после заданного интервала.
+     */
+    private function findNextAvailableTime($tableId, $hallId, $reservationDate, $endTime)
+    {
+        $nextAvailable = Reservation::query()
+            ->when($tableId, fn($query) => $query->where('table_id', $tableId))
+            ->when($hallId, fn($query) => $query->where('hall_id', $hallId))
+            ->where('reservation_date', $reservationDate)
+            ->orderBy('end_time', 'asc')
+            ->where('end_time', '>', $endTime)
+            ->first();
+
+        return $nextAvailable
+            ? $nextAvailable->end_time
+            : $endTime; // Если нет конфликта, возвращаем переданное время как доступное
     }
 
 }
