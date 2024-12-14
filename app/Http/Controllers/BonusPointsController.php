@@ -6,7 +6,7 @@ use App\Models\BonusPoints;
 use App\Http\Requests\Store\StoreBonusPointsRequest;
 use App\Http\Requests\Update\UpdateBonusPointsRequest;
 use App\Services\BonusPointsService;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 class BonusPointsController extends Controller
 {
@@ -70,7 +70,7 @@ class BonusPointsController extends Controller
             return response(null, 204);
         }
 
-        $ids = $request->input('ids');
+        $ids = json_decode($request->getContent(), true);
         if (!is_array($ids)) {
             return response()->json(['error' => 'IDs must be an array.'], 400);
         }

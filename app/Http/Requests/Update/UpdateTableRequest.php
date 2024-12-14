@@ -14,6 +14,7 @@ class UpdateTableRequest extends FormRequest
     public function rules()
     {
         return [
+            '*.id' => 'required|exists:tables,id',
             '*.hall_id' => 'sometimes|required|exists:halls,id',
             '*.table_number' => 'sometimes|required|integer|min:1',
             '*.capacity' => 'sometimes|required|integer|min:1',
@@ -27,6 +28,8 @@ class UpdateTableRequest extends FormRequest
     public function messages(): array
     {
         return [
+            '*.id.required' => 'ID стола обязателен.',
+            '*.id.exists' => 'Указанный стол не существует.',
             '*.hall_id.required' => 'Необходимо указать зал.',
             '*.hall_id.exists' => 'Выбранный зал не существует.',
             '*.table_number.required' => 'Номер стола обязателен.',

@@ -14,6 +14,7 @@ class UpdateHallRequest extends FormRequest
     public function rules()
     {
         return [
+            '*.id' => 'required|exists:halls,id',
             '*.name' => 'sometimes|required|string|max:255',
             '*.capacity' => 'sometimes|required|integer|min:1',
             '*.description' => 'sometimes|nullable|string',
@@ -26,6 +27,8 @@ class UpdateHallRequest extends FormRequest
     public function messages(): array
     {
         return [
+            '*.id.required' => 'ID зала обязателен.',
+            '*.id.exists' => 'Указанный зал не существует.',
             '*.name.string' => 'Название зала должно быть строкой.',
             '*.name.max' => 'Название зала не может превышать 255 символов.',
             '*.capacity.integer' => 'Вместимость зала должна быть целым числом.',

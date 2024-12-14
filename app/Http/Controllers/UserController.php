@@ -8,7 +8,7 @@ use App\Http\Requests\Update\UpdateUserRequest;
 use App\Services\UserService;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -77,7 +77,8 @@ class UserController extends Controller
             return response(null, 204);
         }
 
-        $ids = $request->input('ids');
+        $ids = json_decode($request->getContent(), true);
+
         if (!is_array($ids)) {
             return response()->json(['error' => 'IDs must be an array.'], 400);
         }

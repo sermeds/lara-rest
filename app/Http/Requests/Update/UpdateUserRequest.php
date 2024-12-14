@@ -14,6 +14,7 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
+            '*.id' => 'required|exists:users,id',
             '*.username' => 'sometimes|required|string|max:255',
             '*.email' => 'sometimes|required|email|unique:users,email,' . $this->route('user'),
             '*.password' => 'sometimes|nullable|string|min:8',
@@ -24,6 +25,8 @@ class UpdateUserRequest extends FormRequest
     public function messages(): array
     {
         return [
+            '*.id.required' => 'ID пользователя обязателен.',
+            '*.id.exists' => 'Указанный пользователь не существует.',
             '*.username.sometimes' => 'Имя пользователя требуется, если указано.',
             '*.username.required' => 'Имя пользователя обязательно.',
             '*.username.string' => 'Имя пользователя должно быть строкой.',

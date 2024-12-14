@@ -6,7 +6,8 @@ use App\Models\Table;
 use App\Http\Requests\Store\StoreTableRequest;
 use App\Http\Requests\Update\UpdateTableRequest;
 use App\Services\TableService;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 
 
 class TableController extends Controller
@@ -52,6 +53,7 @@ class TableController extends Controller
             $updatedTables = [];
             foreach ($validated as $table) {
                 if (!isset($table['id'])) {
+                    Log::debug($table);
                     return response()->json(['error' => 'ID is required for update.'], 400);
                 }
                 $updatedTables[] = $this->tableService->updateTable($table['id'], $table);
@@ -71,7 +73,7 @@ class TableController extends Controller
             return response(null, 204);
         }
 
-        $ids = $request->input('ids');
+        $ids = json_decode($request->getContent(), true);
         if (!is_array($ids)) {
             return response()->json(['error' => 'IDs must be an array.'], 400);
         }

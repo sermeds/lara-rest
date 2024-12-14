@@ -56,4 +56,9 @@ class PaymentController extends Controller
         $this->paymentService->deletePayment($id);
         return response(null, 204);
     }
+
+    public function checkStatus($id)
+    {
+        return response()->json($this->paymentService->findOrFail($id)->payment_status, 201, options:JSON_UNESCAPED_UNICODE);
+    }
 }

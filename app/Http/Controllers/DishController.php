@@ -7,6 +7,7 @@ use App\Http\Requests\Store\StoreDishRequest;
 use App\Http\Requests\Update\UpdateDishRequest;
 use App\Services\DishService;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 
 
 class DishController extends Controller
@@ -71,7 +72,7 @@ class DishController extends Controller
             return response(null, 204);
         }
 
-        $ids = $request->input('ids');
+        $ids = json_decode($request->getContent(), true);
         if (!is_array($ids)) {
             return response()->json(['error' => 'IDs must be an array.'], 400);
         }

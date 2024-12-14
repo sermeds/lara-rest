@@ -7,7 +7,7 @@ use App\Http\Requests\Store\StoreHallRequest;
 use App\Http\Requests\Update\UpdateHallRequest;
 use App\Services\HallService;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 class HallController extends Controller
 {
@@ -71,7 +71,7 @@ class HallController extends Controller
             return response(null, 204);
         }
 
-        $ids = $request->input('ids');
+        $ids = json_decode($request->getContent(), true);
         if (!is_array($ids)) {
             return response()->json(['error' => 'IDs must be an array.'], 400);
         }

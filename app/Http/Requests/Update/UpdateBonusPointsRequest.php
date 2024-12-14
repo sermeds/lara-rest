@@ -14,6 +14,7 @@ class UpdateBonusPointsRequest extends FormRequest
     public function rules()
     {
         return [
+            '*.id' => 'required|exists:bonus_points,id',
             '*.user_id' => 'sometimes|required|exists:users,id',
             '*.points' => 'sometimes|required|numeric|min:0',
             '*.expired_at' => 'sometimes|required|date',
@@ -23,6 +24,8 @@ class UpdateBonusPointsRequest extends FormRequest
     public function messages(): array
     {
         return [
+            '*.id.required' => 'ID бонусов обязателен.',
+            '*.id.exists' => 'Указанный бонус не существует.',
             '*.user_id.exists' => 'Пользователь с таким ID не существует.',
             '*.points.numeric' => 'Бонусные баллы должны быть числом.',
             '*.expired_at.date' => 'Дата истечения должна быть корректной датой.',

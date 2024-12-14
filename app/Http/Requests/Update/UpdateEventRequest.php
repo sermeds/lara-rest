@@ -14,6 +14,7 @@ class UpdateEventRequest extends FormRequest
     public function rules()
     {
         return [
+            '*.id' => 'required|exists:events,id',
             '*.hall_id' => 'sometimes|required|exists:halls,id',
             '*.name' => 'sometimes|required|string|max:255',
             '*.description' => 'sometimes|nullable|string',
@@ -26,6 +27,8 @@ class UpdateEventRequest extends FormRequest
     public function messages(): array
     {
         return [
+            '*.id.required' => 'ID события обязателен.',
+            '*.id.exists' => 'Указанное событие не существует.',
             '*.hall_id.exists' => 'Указанный зал не существует.',
             '*.name.string' => 'Название должно быть строкой.',
             '*.name.max' => 'Название не может превышать 255 символов.',

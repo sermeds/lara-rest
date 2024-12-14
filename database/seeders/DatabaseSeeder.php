@@ -11,17 +11,17 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            BonusPointsSeeder::class,
-            DishSeeder::class,
-            EventSeeder::class,
-            FeedbackSeeder::class,
-            HallSeeder::class,
-            PaymentSeeder::class,
-            PromotionSeeder::class,
-            ReceiptSeeder::class,
-            ReservationDishSeeder::class,
-            ReservationSeeder::class,
-            TableSeeder::class,
+//            BonusPointsSeeder::class,
+//            DishSeeder::class,
+//            EventSeeder::class,
+//            FeedbackSeeder::class,
+//            HallSeeder::class,
+//            PaymentSeeder::class,
+//            PromotionSeeder::class,
+//            ReceiptSeeder::class,
+//            ReservationDishSeeder::class,
+//            ReservationSeeder::class,
+//            TableSeeder::class,
             UserSeeder::class,
         ]);
     }
