@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\ProcessWebhook;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PaymentWebhookController extends Controller
 {
@@ -13,9 +14,7 @@ class PaymentWebhookController extends Controller
             'id' => 'required|integer|exists:payments,id',
             'status' => 'required|string|in:success,failed',
         ]);
-
         ProcessWebhook::dispatch($data);
-
         return response()->json(['message' => 'Webhook accepted'], 202, options:JSON_UNESCAPED_UNICODE);
     }
 

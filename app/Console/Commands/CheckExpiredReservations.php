@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 
 class CheckExpiredReservations extends Command
 {
-    use ReservationKeyGenerator; // Подключаем ваш трейт
+    use ReservationKeyGenerator;
 
     protected $signature = 'reservations:check-expired';
 

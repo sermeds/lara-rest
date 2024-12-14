@@ -10,9 +10,7 @@ class UserControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * Тест создания пользователя.
-     */
+
     public function test_user_can_be_created()
     {
         $data = [
@@ -29,9 +27,6 @@ class UserControllerTest extends TestCase
         $this->assertDatabaseHas('users', ['email' => 'test@example.com']); // Проверяем, что пользователь записан в БД
     }
 
-    /**
-     * Тест получения списка пользователей.
-     */
     public function test_can_get_user_list()
     {
         User::factory()->count(5)->create(); // Создаем 5 тестовых пользователей
@@ -42,9 +37,6 @@ class UserControllerTest extends TestCase
             ->assertJsonCount(5); // Проверяем, что вернулось 5 записей
     }
 
-    /**
-     * Тест обновления пользователя.
-     */
     public function test_user_can_be_updated()
     {
         $user = User::factory()->create(); // Создаем тестового пользователя
@@ -60,9 +52,6 @@ class UserControllerTest extends TestCase
         $this->assertDatabaseHas('users', ['username' => 'updateduser']); // Проверяем обновление в БД
     }
 
-    /**
-     * Тест удаления пользователя.
-     */
     public function test_user_can_be_deleted()
     {
         $user = User::factory()->create(); // Создаем тестового пользователя

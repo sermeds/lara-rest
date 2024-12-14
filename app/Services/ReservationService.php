@@ -37,7 +37,7 @@ class ReservationService
 
     public function createReservation(array $data)
     {
-        $key = null; // Инициализация переменной
+        $key = null;
 
 //        try {
         // Генерация ключа для Redis
@@ -75,7 +75,6 @@ class ReservationService
         // Устанавливаем блокировку
         $this->blockPlace($key, $data['user_id'] ?? $data['guest_name'], $data['start_time'], $data['end_time']);
 
-        // Создаем бронирование со статусом `pending`
         $data['status'] = Reservation::STATUS_PENDING;
 
         $reservation = Reservation::create($data);
@@ -188,9 +187,7 @@ class ReservationService
         return $menuCostPerGuest * $reservation->guests_count;
     }
 
-    /**
-     * Получить пересекающиеся бронирования.
-     */
+    // Получить пересекающиеся бронирования.
     private function getConflictingReservations($tableId, $hallId, $reservationDate, $startTime, $endTime)
     {
         return Reservation::query()
@@ -206,9 +203,7 @@ class ReservationService
             ->get()->isNotEmpty();
     }
 
-    /**
-     * Найти ближайшее доступное время после заданного интервала.
-     */
+    //Найти ближайшее доступное время после заданного интервала.
     private function findNextAvailableTime($tableId, $hallId, $reservationDate, $endTime)
     {
         $nextAvailable = Reservation::query()
@@ -221,7 +216,7 @@ class ReservationService
 
         return $nextAvailable
             ? $nextAvailable->end_time
-            : $endTime; // Если нет конфликта, возвращаем переданное время как доступное
+            : $endTime;
     }
 
 }

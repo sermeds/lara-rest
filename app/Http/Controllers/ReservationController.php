@@ -56,7 +56,6 @@ class ReservationController extends Controller
             ], 409, [], JSON_UNESCAPED_UNICODE);
 
         } catch (\Exception $e) {
-            // Логируем ошибку
             Log::error('Ошибка создания бронирования', [
                 'error' => $e->getMessage(),
             ]);
